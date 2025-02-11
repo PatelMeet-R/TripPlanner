@@ -1,0 +1,35 @@
+/* Footer Styles */
+.footer {
+  background-color: #f8f9fa; /* Light background */
+  border-top: 1px solid #e9ecef; /* Subtle border */
+  color: #6c757d; /* Gray text color */
+  font-family: Arial, sans-serif;
+}
+
+/* Social Media Icons */
+.f-info-socials a {
+  color: #28a745; /* Green color for icons */
+  transition: color 0.3s ease-in-out;
+}
+
+.f-info-socials a:hover {
+  color: #218838; /* Darker green on hover */
+}
+
+.f-info-copyright {
+  font-size: 0.9rem;
+}
+
+.f-info-links a {
+  color: #28a745; /* Green color for links */
+  font-size: 0.9rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.f-info-links a:hover {
+  color: #218838; /* Darker green on hover */
+  text-decoration: underline; /* Underline on hover */
+}
+.f-info-socials i .fa-brands {
+  color: black;
+}

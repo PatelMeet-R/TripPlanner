@@ -1,0 +1,124 @@
+/* Ensure the navbar is sticky and on top of other content */
+.custom-navbar {
+  z-index: 1050;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  transition: all 0.3s ease-in-out;
+}
+
+/* Brand Logo and Name */
+.navbar-brand .brand-name {
+  font-size: 1.5rem;
+  font-family: "Delicious Handrawn", serif !important;
+  color: #000;
+  transition: font-size 0.3s ease-in-out;
+}
+
+.navbar-brand i {
+  font-size: 1.8rem;
+  color: #000; 
+}
+
+/* Search Form */
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  border-radius: 20px 0 0 20px; /* Rounded left side */
+  border: 1px solid #28a745;
+  padding: 0.5rem 1rem;
+}
+
+.search-btn {
+  border-radius: 0 20px 20px 0; /* Rounded right side */
+  border: 1px solid #28a745;
+  background-color: #28a745;
+  color: white;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.search-btn:hover {
+  background-color: #218838;
+}
+
+/* Buttons */
+.add-trip-btn,
+.sign-up-btn,
+.login-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 20px; /* Rounded buttons */
+  transition: all 0.3s ease-in-out;
+}
+
+.add-trip-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.add-trip-btn:hover {
+  background-color: #218838;
+}
+
+.sign-up-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.sign-up-btn:hover {
+  background-color: #0056b3;
+}
+
+.login-btn {
+  border: 1px solid #28a745;
+  color: #28a745;
+}
+
+.login-btn:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 767px) {
+  .navbar-brand .brand-name {
+    font-size: 1.2rem; /* Shrink brand name */
+    font-family: "Delicious Handrawn", serif !important;
+  }
+
+  .navbar-brand i {
+    font-size: 1.5rem; /* Shrink icon */
+  }
+
+  .navbar-nav {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-item {
+    margin: 10px 0;
+  }
+
+  .search-form {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .search-input {
+    width: 70%;
+  }
+
+  .search-btn {
+    width: 30%;
+  }
+
+  .add-trip-btn,
+  .sign-up-btn,
+  .login-btn {
+    width: 100%;
+    margin: 5px 0;
+  }
+}

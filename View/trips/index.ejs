@@ -1,0 +1,178 @@
+<%- layout('layout/boilerplate') %>
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">All Trips</h2>
+
+  <div class="row">
+    <% for (let trip of allTrips) { %>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4">
+      <div class="card shadow-lg h-100 d-flex flex-column">
+        <div class="card-body flex-grow-1">
+          <!-- Three-dot menu -->
+          <div class="dropdown position-absolute top-0 end-0 m-2">
+            <button
+              class="btn btn-link text-dark"
+              type="button"
+              id="dropdownMenuButton<%= trip._id %>"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <ul
+              class="dropdown-menu"
+              aria-labelledby="dropdownMenuButton<%= trip._id %>"
+            >
+              <!-- Edit Button (GET Request) -->
+              <li>
+                <a href="/trips/<%= trip._id %>/edit" class="dropdown-item"
+                  >Edit</a
+                >
+              </li>
+
+              <!-- Delete Form -->
+              <li>
+                <form
+                  action="/trips/<%= trip._id %>?_method=DELETE"
+                  method="POST"
+                  style="display: inline"
+                >
+                  <!-- <input type="hidden" name="_method" value="DELETE" /> -->
+                  <button type="submit" class="dropdown-item">Delete</button>
+                </form>
+              </li>
+
+              <!-- Like Form -->
+              <li>
+                <form
+                  action="/trips/<%= trip._id %>/like"
+                  method="POST"
+                  style="display: inline"
+                >
+                  <button type="submit" class="dropdown-item" disabled>
+                    Like
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Trip Title -->
+          <h5 class="card-title text-primary mb-3"><%= trip.title %></h5>
+
+          <!-- Destination Details -->
+          <div class="mb-3">
+            <p class="card-text">
+              <strong>Destination:</strong>
+              <br />
+              🏴 Country: <%= trip.destination.country %> <br />
+              📍 Location: <%= trip.destination.location %>
+            </p>
+          </div>
+
+          <!-- Trip Dates -->
+          <div class="mb-3">
+            <p>
+              <strong>Start Date:</strong> <%=
+              trip.startDate.toLocaleDateString('en-GB') %>
+              <br />
+              <strong>End Date:</strong> <%=
+              trip.endDate.toLocaleDateString('en-GB') %>
+            </p>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <p><strong>Description:</strong> <%= trip.description %></p>
+          </div>
+
+          <!-- Budget -->
+          <div class="mb-3">
+            <p>
+              <strong>Budget:</strong> 💰 &#8377; &nbsp;<%=
+              trip.budget.toLocaleString("en-IN") %>
+            </p>
+          </div>
+
+          <!-- Status -->
+          <div class="mb-3">
+            <p>
+              <strong>Status:</strong>
+              <span class="badge bg-success"><%= trip.status %></span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Checkout Activities Button (Fixed at the Bottom) -->
+        <div class="card-footer bg-transparent border-top-0">
+          <form action="/trips/<%=trip._id%>" class="w-100">
+            <button class="btn btn-outline-primary btn-sm w-100">
+              Checkout Activities
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<!-- Custom CSS for Enhanced Design -->
+<style>
+  .card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #ffffff;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+    color: #34495e;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.5em 0.75em;
+  }
+
+  .btn-outline-primary {
+    border-color: #3498db;
+    color: #3498db;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #3498db;
+    color: #ffffff;
+  }
+
+  .dropdown-item {
+    font-size: 0.9rem;
+    color: #34495e;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+  }
+
+  .card-footer {
+    padding: 1rem;
+    background-color: transparent;
+  }
+</style>

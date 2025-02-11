@@ -1,0 +1,244 @@
+<%- layout('layout/boilerplate') %>
+
+<!-- Link to external CSS file -->
+<style>
+  /* Custom Styles for the Form */
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    max-width: 800px;
+    padding: 20px;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem; /* Smaller label font size */
+  }
+
+  .form-control {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 8px; /* Reduced padding */
+    font-size: 0.9rem; /* Smaller font size */
+  }
+
+  .form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.8rem; /* Smaller feedback font size */
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+    padding: 8px 16px; /* Smaller button padding */
+    font-size: 0.9rem; /* Smaller button font size */
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-success:hover {
+    background-color: #218838;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+    }
+
+    .form-control {
+      padding: 6px;
+      font-size: 0.85rem;
+    }
+
+    .btn-success {
+      width: 100%;
+      padding: 8px;
+    }
+  }
+</style>
+
+<body class="bg-light">
+  <div class="container my-4">
+    <h2 class="text-center mb-3" style="font-size: 1.5rem;">New Trip</h2>
+    <form action="/trips" method="POST" class="needs-validation" novalidate>
+      <!-- Title -->
+      <div class="mb-2">
+        <label for="title" class="form-label">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          name="trip[title]"
+          placeholder="Trip name"
+          required
+        />
+        <div class="invalid-feedback">Please enter a trip title.</div>
+      </div>
+
+      <!-- Initial Point -->
+      <div class="mb-2">
+        <label for="initialpoint" class="form-label">Starting Point</label>
+        <input
+          type="text"
+          class="form-control"
+          id="initialpoint"
+          name="trip[initialpoint]"
+          placeholder="Enter the starting point of your trip"
+          required
+        />
+        <div class="invalid-feedback">Please enter the starting point.</div>
+      </div>
+
+      <!-- Destination (Country and Location) -->
+      <div class="mb-2">
+        <label class="form-label">Destination</label>
+        <div class="row g-2">
+          <div class="col-md-6 mb-2">
+            <label for="country" class="form-label">Country</label>
+            <input
+              type="text"
+              class="form-control"
+              id="country"
+              name="trip[destination][country]"
+              placeholder="Destination country"
+              required
+            />
+            <div class="invalid-feedback">
+              Please enter the destination country.
+            </div>
+          </div>
+          <div class="col-md-6 mb-2">
+            <label for="location" class="form-label">Location</label>
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              name="trip[destination][location]"
+              placeholder="Destination location"
+              required
+            />
+            <div class="invalid-feedback">
+              Please enter the destination location.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-2">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="trip[description]"
+          rows="2"
+          placeholder="What to explore"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Please enter a trip description.</div>
+      </div>
+
+      <!-- Start Date and End Date -->
+      <div class="row g-2 mb-2">
+        <div class="col-md-6">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="startDate"
+            name="trip[startDate]"
+            required
+          />
+          <div class="invalid-feedback">Please select a start date.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="endDate" class="form-label">End Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="endDate"
+            name="trip[endDate]"
+            required
+          />
+          <div class="invalid-feedback">Please select an end date.</div>
+        </div>
+      </div>
+
+      <!-- Budget (with Input Group) -->
+      <div class="mb-2">
+        <label for="budget" class="form-label">Budget</label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input
+            type="number"
+            class="form-control"
+            id="budget"
+            name="trip[budget]"
+            placeholder="Maximum amount needed for this trip"
+            required
+          />
+          <span class="input-group-text">.00</span>
+          <div class="invalid-feedback">Please enter a budget.</div>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="mb-2">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-select" id="status" name="trip[status]" required>
+          <option value="" disabled selected>Select trip status</option>
+          <option value="Planned">Planned</option>
+          <option value="OnTrip">On Trip</option>
+          <option value="Delayed">Delayed</option>
+          <option value="Complete">Complete</option>
+        </select>
+        <div class="invalid-feedback">Please select a trip status.</div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-success">Add Trip</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- JavaScript Validation -->
+  <script>
+    const form = document.querySelector(".needs-validation");
+    const startDate = document.getElementById("startDate");
+    const endDate = document.getElementById("endDate");
+
+    form.addEventListener(
+      "submit",
+      (event) => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+
+        // Validate endDate is not earlier than startDate
+        if (new Date(endDate.value) < new Date(startDate.value)) {
+          endDate.setCustomValidity("End date must be after the start date.");
+          endDate.reportValidity();
+          event.preventDefault();
+        } else {
+          endDate.setCustomValidity("");
+        }
+
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  </script>

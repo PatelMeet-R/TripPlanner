@@ -1,0 +1,248 @@
+<%- layout('layout/boilerplate') %>
+
+<!-- Link to external CSS file -->
+<style>
+  /* Custom Styles for the Form */
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    max-width: 800px;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+
+  .form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875em;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-success:hover {
+    background-color: #218838;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .form-label {
+      font-size: 0.95rem;
+    }
+
+    .form-control {
+      padding: 8px;
+    }
+
+    .btn-success {
+      width: 100%;
+    }
+  }
+</style>
+<body class="bg-light">
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Edit Trip</h2>
+    <form
+      action="/trips/<%=trip._id%>?_method=PUT"
+      method="POST"
+      class="needs-validation"
+      novalidate
+    >
+      <!-- Title -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          name="trip[title]"
+          placeholder="Trip name"
+          required
+          value="<%= trip.title %>"
+        />
+        <div class="invalid-feedback">Please enter a trip title.</div>
+      </div>
+
+      <!-- Initial Point -->
+      <div class="mb-3">
+        <label for="initialpoint" class="form-label">Starting Point</label>
+        <input
+          type="text"
+          class="form-control"
+          id="initialpoint"
+          name="trip[initialpoint]"
+          placeholder="Enter the starting point of your trip"
+          required
+          value="<%= trip.initialpoint %>"
+        />
+        <div class="invalid-feedback">Please enter the starting point.</div>
+      </div>
+
+      <!-- Destination (Country and Location) -->
+      <div class="mb-3">
+        <label class="form-label">Destination</label>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input
+              type="text"
+              class="form-control"
+              id="country"
+              name="trip[destination][country]"
+              placeholder="Destination country"
+              required
+              value="<%= trip.destination.country %>"
+            />
+            <div class="invalid-feedback">
+              Please enter the destination country.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              name="trip[destination][location]"
+              placeholder="Destination location"
+              required
+              value="<%= trip.destination.location %>"
+            />
+            <div class="invalid-feedback">
+              Please enter the destination location.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="trip[description]"
+          rows="3"
+          placeholder="Please enter a trip description"
+          required
+          
+        ><%=trip.description%></textarea>
+        <div class="invalid-feedback">Please enter a trip description.</div>
+      </div>
+
+      <!-- Start Date and End Date -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="startDate"
+            name="trip[startDate]"
+            value="<%= trip.startDate.toISOString().substring(0, 10) %>"
+            required
+          />
+          <div class="invalid-feedback">Please select a start date.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="endDate" class="form-label">End Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="endDate"
+            name="trip[endDate]"
+            value="<%=trip.endDate.toISOString().substring(0,10)%>"
+            required
+          />
+          <div class="invalid-feedback">Please select an end date.</div>
+        </div>
+      </div>
+
+      <!-- Budget (with Input Group) -->
+      <div class="mb-3">
+        <label for="budget" class="form-label">Budget</label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input
+            type="number"
+            class="form-control"
+            id="budget"
+            name="trip[budget]"
+            placeholder="Maximum amount needed for this trip"
+            value="<%= trip.budget %>"
+            required
+          />
+          <span class="input-group-text">.00</span>
+          <div class="invalid-feedback">Please enter a budget.</div>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-select" id="status" name="trip[status]" required>
+          <option value="Planned" <%= trip.status === 'Planned' ? 'selected' : '' %>>Planned</option>
+          <option value="OnTrip" <%= trip.status === 'OnTrip' ? 'selected' : '' %>>On Trip</option>
+          <option value="Delayed" <%= trip.status === 'Delayed' ? 'selected' : '' %>>Delayed</option>
+          <option value="Complete" <%= trip.status === 'Complete' ? 'selected' : '' %>>Complete</option>
+        </select>
+        
+        <div class="invalid-feedback">Please select a trip status.</div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-success btn-lg">Edit Trip</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- JavaScript Validation -->
+  <script>
+    const form = document.querySelector(".needs-validation");
+    const startDate = document.getElementById("startDate");
+    const endDate = document.getElementById("endDate");
+
+    form.addEventListener(
+      "submit",
+      (event) => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+
+        // Validate endDate is not earlier than startDate
+        if (new Date(endDate.value) < new Date(startDate.value)) {
+          endDate.setCustomValidity("End date must be after the start date.");
+          endDate.reportValidity();
+          event.preventDefault();
+        } else {
+          endDate.setCustomValidity("");
+        }
+
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  </script>
+</body>
