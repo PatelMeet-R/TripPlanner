@@ -49,6 +49,7 @@ async function main() {
 //     console.log("error", err);
 //   }
 // });
+
 // // index route
 app.get("/trips", async (req, res) => {
   try {
@@ -58,6 +59,7 @@ app.get("/trips", async (req, res) => {
     console.log("get route for index", err);
   }
 });
+
 // create route
 app.post("/trips", async (req, res) => {
   let tripData = req.body.trip;
@@ -74,6 +76,7 @@ app.get("/trips/new", async (req, res) => {
     console.log("error et rendering new EJS", err);
   }
 });
+
 // edit route
 app.get("/trips/:id/edit", async (req, res) => {
   // res.send("this is the edit route");
@@ -81,6 +84,7 @@ app.get("/trips/:id/edit", async (req, res) => {
   let trip = await Trip.findById(id);
   res.render("trips/edit.ejs", { trip });
 });
+
 app.put("/trips/:id", async (req, res) => {
   try {
     let { id } = req.params;
@@ -97,6 +101,7 @@ app.put("/trips/:id", async (req, res) => {
     console.log("this error occure at edit route", error);
   }
 });
+
 // destroy route
 app.delete("/trips/:id", async (req, res) => {
   try {
