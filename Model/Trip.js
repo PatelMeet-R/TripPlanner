@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Activity } = require("./activity.js");
 const Schema = mongoose.Schema;
 
 const tripSchema = new Schema({
@@ -55,4 +56,10 @@ const tripSchema = new Schema({
     type: Date,
   },
 });
+tripSchema.post("findOneAndDelete", async (trip) => {
+  if (trip) {
+    await Activity.deleteMany({ _id: { $in: trip.activityDetails } });
+  }
+});
+
 module.exports.Trip = mongoose.model("Trip", tripSchema);

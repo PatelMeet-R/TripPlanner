@@ -8,6 +8,30 @@ const port = 3000;
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/Trip");
 }
+// app.get("/", (req, res) => {
+//   res.send("routing testing successful");
+// });
+// app.get("/trip", async (req, res) => {
+//   try {
+//     const trip1 = new Trip({
+//       title: "Summer Vacation",
+//       destination: {
+//         country: "France",
+//         location: "Paris",
+//       },
+//       startDate: "2023-07-15",
+//       endDate: "2023-07-30",
+//       description: "A relaxing trip to explore the beauty of Paris.",
+//       budget: 2500,
+//       status: "Planned",
+//     });
+//     const tripdata = await trip1.save();
+//     console.log(tripdata);
+//     console.log("trip add successfully");
+//   } catch (err) {
+//     console.log("error", err);
+//   }
+// });
 
 app.get("/data", async (req, res) => {
   try {

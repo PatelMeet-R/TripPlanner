@@ -1,5 +1,4 @@
-<%- layout('layout/boilerplate') %>
-
+<%- layout('layout/boilerplate') %> <%=success%>
 <div class="container mt-4">
   <h2 class="text-center mb-4">All Trips</h2>
 
@@ -105,7 +104,7 @@
 
         <!-- Checkout Activities Button (Fixed at the Bottom) -->
         <div class="card-footer bg-transparent border-top-0">
-          <form action="/trips/<%=trip._id%>" class="w-100">
+          <form action="/trips/<%=trip._id%>" class="w-100" method="GET">
             <button class="btn btn-outline-primary btn-sm w-100">
               Checkout Activities
             </button>

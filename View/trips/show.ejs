@@ -1,0 +1,518 @@
+<%- layout('layout/boilerplate') %>
+<style>
+  /* this style for above show sections */
+  .container {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  /* Trip Card styling */
+  .trip-card {
+    height: 30vh;
+    width: 100%;
+    background-color: #f9f9f9;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: space-between;
+  }
+
+  .trip-info,
+  .trip-details {
+    flex: 1;
+  }
+
+  /* Section headers styling */
+  h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Text styling */
+  p {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Badge styling */
+  .trip-status .badge {
+    font-size: 1.1rem;
+    padding: 6px 12px;
+  }
+
+  @media (max-width: 1200px) {
+    .trip-card {
+      height: auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .card-body {
+      flex-direction: column;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+
+    h6 {
+      font-size: 0.95rem;
+    }
+
+    .trip-status .badge {
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .container {
+      max-width: 100%; /* Full width on smaller devices */
+    }
+
+    .trip-card {
+      height: 30vh; /* Maintain height to 30% of the viewport */
+      overflow: hidden; /* Avoid scrolling */
+    }
+
+    p {
+      font-size: 0.85rem; /* Reduce font size for smaller screens */
+    }
+
+    h6 {
+      font-size: 0.9rem; /* Reduce header size */
+    }
+
+    .trip-status .badge {
+      font-size: 0.95rem;
+    }
+
+    .card-body {
+      padding: 5px; /* Reduce padding for smaller screens */
+    }
+  }
+  /* this section will best start for the activities */
+  /* Custom width for smaller screens (below 576px) */
+  @media (max-width: 576px) {
+    .btn-responsive {
+      width: 25%; /* You can adjust this value */
+    }
+  }
+
+  /* Custom width for medium screens (768px and above) */
+  @media (min-width: 768px) {
+    .btn-responsive {
+      width: 20%;
+    }
+  }
+
+  /* Custom width for large screens (992px and above) */
+  @media (min-width: 992px) {
+    .btn-responsive {
+      width: 20%;
+    }
+  }
+  @media (min-width: 1200px) {
+    .btn-responsive {
+      width: 10%;
+      margin: 0 3rem 0 0; /* Adjust this for 1200px and larger */
+    }
+  }
+</style>
+
+<!-- Main Card Wrapper -->
+<div class="container my-1 my-md-2 my-lg-4">
+  <div class="card trip-card shadow-lg rounded-4">
+    <div
+      class="card-body d-flex flex-column flex-md-row justify-content-between"
+    >
+      <!-- Left Section: Destination and Dates -->
+      <div class="trip-info mb-1 mb-md-2 mb-lg-4">
+        <!-- Destination Section -->
+        <div class="mb-2">
+          <h6 class="text-muted">Destination</h6>
+          <p><strong>Country:</strong> <%= trip.destination.country %></p>
+          <p><strong>Location:</strong> <%= trip.destination.location %></p>
+        </div>
+
+        <!-- Trip Dates Section -->
+        <div class="mb-1">
+          <h6 class="text-muted">Trip Dates</h6>
+          <p>
+            <strong>Start Date:</strong> <%=
+            trip.startDate.toLocaleDateString('en-GB') %>
+          </p>
+          <p>
+            <strong>End Date:</strong> <%=
+            trip.endDate.toLocaleDateString('en-GB') %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Section: Description, Budget, Status -->
+      <div class="trip-details">
+        <!-- Description Section -->
+        <div class="mb-2 d-none d-sm-block">
+          <h6 class="text-muted">Description</h6>
+          <p><%= trip.description %></p>
+        </div>
+
+        <!-- Budget Section -->
+        <div class="mb-2">
+          <h6 class="text-muted">Budget</h6>
+          <p>
+            <strong
+              >💰 &#8377; <%= trip.budget.toLocaleString('en-IN') %></strong
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+<!-- activity create Modal  Form )-->
+<div
+  class="modal fade"
+  id="smallActivityModal"
+  tabindex="-1"
+  aria-labelledby="ActivityModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ActivityModalLabel">New Activity</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          id="smallActivityForm"
+          action="/trips/<%=trip._id %>/activities"
+          method="POST"
+          novalidate
+        >
+          <!-- Activity Name -->
+          <div class="mb-2">
+            <label for="actName" class="form-label">Activity Name</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="actName"
+              name="activity[actName]"
+              required
+            />
+            <div class="invalid-feedback">Please provide an activity name.</div>
+          </div>
+
+          <!-- Activity Note -->
+          <div class="mb-2">
+            <label for="actNote" class="form-label">Activity Note</label>
+            <textarea
+              class="form-control form-control-sm"
+              id="actNote"
+              name="activity[actnote]"
+              rows="2"
+              required
+            ></textarea>
+            <div class="invalid-feedback">
+              Please provide a note for the activity.
+            </div>
+          </div>
+
+          <!-- Activity Location -->
+          <div class="mb-2">
+            <label for="actLocation" class="form-label">Location</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="actLocation"
+              name="activity[actlocation]"
+              required
+            />
+            <div class="invalid-feedback">Please provide the location.</div>
+          </div>
+
+          <!-- Activity Category -->
+          <div class="mb-2">
+            <label for="actCategory" class="form-label">Category</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="actCategory"
+              name="activity[actcategory]"
+              required
+            />
+            <div class="invalid-feedback">Please provide a category.</div>
+          </div>
+
+          <!-- Activity Cost -->
+          <div class="mb-2">
+            <label for="actCost" class="form-label">Cost</label>
+            <input
+              type="number"
+              class="form-control form-control-sm"
+              id="actCost"
+              name="activity[actcost]"
+              required
+            />
+            <div class="invalid-feedback">Please provide the cost.</div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="modal-footer p-2">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary btn-sm">
+              Save Activity
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Button to trigger modal -->
+<div
+  class="d-flex justify-content-end mb-3 me-3 me-sm-3 me-md-3 me-lg-4 me-xl-5"
+>
+  <button
+    type="button"
+    class="btn btn-primary btn-sm"
+    data-bs-toggle="modal"
+    data-bs-target="#smallActivityModal"
+  >
+    Add Activity
+  </button>
+</div>
+<hr />
+
+<!-- Container for Activities List -->
+<div class="container mt-5">
+  <h5 class="mb-4 text-center"><b>All Activities</b></h5>
+
+  <!--Activity Cards -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% for (let activity of trip.activityDetails) { %>
+    <div class="col">
+      <div class="card shadow-sm border-light h-100">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title"><%= activity.actName %></h5>
+          <p class="card-text"><%= activity.actnote %></p>
+          <p class="card-text">
+            <strong>Location:</strong> <%= activity.actlocation %>
+          </p>
+          <p class="card-text">
+            <strong>Category:</strong> <%= activity.actcategory %>
+          </p>
+          <p class="card-text">
+            <strong>Cost:</strong> 💰 &#8377; <%=
+            activity.actcost.toLocaleString('en-IN') %>
+          </p>
+          <p class="card-text">
+            <strong>Status:</strong>
+            <span
+              class="badge bg-<%= activity.actstatus === 'Accepted' ? 'success' : activity.actstatus === 'Pending' ? 'warning' : 'danger' %>"
+              ><%= activity.actstatus %></span
+            >
+          </p>
+
+          <div class="mt-auto d-flex">
+            <form
+              action="/trips/<%= trip._id %>/activities/<%= activity._id %>?_method=DELETE"
+              method="POST"
+            >
+              <button type="submit" class="btn btn-sm btn-danger ms-auto">
+                Delete
+              </button>
+            </form>
+
+            <form
+              action="/trips/<%= trip._id %>/activities/<%= activity._id %>?_method=PUT"
+              method="POST"
+            >
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-secondary ms-3 me-auto"
+                data-bs-toggle="modal"
+                data-bs-target="#editActivityModal_<%= activity._id %>"
+              >
+                Edit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  Edit Activity Modal for each activity -->
+    <div
+      class="modal fade"
+      id="editActivityModal_<%= activity._id %>"
+      tabindex="-1"
+      aria-labelledby="editActivityModalLabel_<%= activity._id %>"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="editActivityModalLabel_<%= activity._id %>"
+            >
+              Edit Activity
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form
+              id="editActivityForm_<%= activity._id %>"
+              action="/trips/<%= trip._id %>/activities/<%= activity._id %>?_method=PUT"
+              method="POST"
+              novalidate
+            >
+              <!-- Activity ID (hidden field) -->
+              <input
+                type="hidden"
+                name="activity[_id]"
+                value="<%= activity._id %>"
+              />
+
+              <!-- Activity Name -->
+              <div class="mb-2">
+                <label for="editActName_<%= activity._id %>" class="form-label"
+                  >Activity Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="editActName_<%= activity._id %>"
+                  name="activity[actName]"
+                  value="<%= activity.actName %>"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Please provide an activity name.
+                </div>
+              </div>
+
+              <!-- Activity Note -->
+              <div class="mb-2">
+                <label for="editActNote_<%= activity._id %>" class="form-label"
+                  >Activity Note</label
+                >
+                <textarea
+                  class="form-control form-control-sm"
+                  id="editActNote_<%= activity._id %>"
+                  name="activity[actnote]"
+                  rows="2"
+                  required
+                >
+                <%= activity.actnote %></textarea
+                >
+                <div class="invalid-feedback">
+                  Please provide a note for the activity.
+                </div>
+              </div>
+
+              <!-- Activity Location -->
+              <div class="mb-2">
+                <label
+                  for="editActLocation_<%= activity._id %>"
+                  class="form-label"
+                  >Location</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="editActLocation_<%= activity._id %>"
+                  name="activity[actlocation]"
+                  value="<%= activity.actlocation %>"
+                  required
+                />
+                <div class="invalid-feedback">Please provide the location.</div>
+              </div>
+
+              <!-- Activity Category -->
+              <div class="mb-2">
+                <label
+                  for="editActCategory_<%= activity._id %>"
+                  class="form-label"
+                  >Category</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="editActCategory_<%= activity._id %>"
+                  name="activity[actcategory]"
+                  value="<%= activity.actcategory %>"
+                  required
+                />
+                <div class="invalid-feedback">Please provide a category.</div>
+              </div>
+
+              <!-- Activity Cost -->
+              <div class="mb-2">
+                <label for="editActCost_<%= activity._id %>" class="form-label"
+                  >Cost</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-control-sm"
+                  id="editActCost_<%= activity._id %>"
+                  name="activity[actcost]"
+                  value="<%= activity.actcost %>"
+                  required
+                />
+                <div class="invalid-feedback">Please provide the cost.</div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="modal-footer p-2">
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-sm"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" class="btn btn-primary btn-sm">
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% } %>
+  </div>
+</div>
