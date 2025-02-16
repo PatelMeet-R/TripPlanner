@@ -3,7 +3,7 @@
     <!-- Brand Logo and Name -->
     <a class="navbar-brand d-flex align-items-center" href="/trips">
       <i class="fa-solid fa-feather me-2"></i>
-      <span class="brand-name">TripPlanner</span>
+      <span class="brand-name">TripPlanner </span>
     </a>
 
     <!-- Toggler Button for Mobile -->
@@ -41,15 +41,23 @@
           <button class="btn btn-dark">Add trip</button>
         </form>
 
-        <!-- Sign Up Button -->
+        <% if (!currUser) { %>
+
         <li class="nav-item me-lg-3">
-          <a class="btn btn-primary sign-up-btn" href="#">Sign Up</a>
+          <a class="btn btn-primary sign-up-btn" href="/signup">Sign Up</a>
         </li>
 
-        <!-- Login Button -->
         <li class="nav-item">
-          <a class="btn btn-outline-secondary login-btn" href="#">Login</a>
+          <a class="btn btn-outline-secondary login-btn" href="/login">Login</a>
         </li>
+        <% } else { %>
+
+        <form action="/logout" method="post" class="nav-item">
+          <button type="submit" class="btn btn-danger logout-btn">
+            Logout
+          </button>
+        </form>
+        <% } %>
       </ul>
     </div>
   </div>

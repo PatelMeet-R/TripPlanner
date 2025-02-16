@@ -1,0 +1,35 @@
+<%- layout('layout/boilerplate') %>
+
+<div class="container-fluid" style="background-color: #f2f3f4; min-height: 100vh;">
+
+  <div class="row justify-content-center">
+   
+    <div class="col-12 col-md-8 col-lg-6 col-xl-4" style="margin-top: 50px;">
+      <form action="/signup" method="POST" class="border p-4 rounded shadow-sm" style="background-color: white; border-radius: 15px;">
+        <h3 class="text-center mb-4">Sign Up</h3>
+
+        <!-- Username field -->
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" id="username" name="user[username]" class="form-control" placeholder="Enter your username" required>
+        </div>
+
+        <!-- Email field -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" name="user[email]" class="form-control" placeholder="Enter your email" required>
+        </div>
+
+        <!-- Password field -->
+        <div class="mb-4">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" name="user[password]" class="form-control" placeholder="Enter your password" required>
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-dark">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

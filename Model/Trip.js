@@ -55,6 +55,10 @@ const tripSchema = new Schema({
   updateAt: {
     type: Date,
   },
+  TripCreator: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 tripSchema.post("findOneAndDelete", async (trip) => {
   if (trip) {

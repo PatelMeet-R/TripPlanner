@@ -35,6 +35,10 @@ const activitySchema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  ActivityCreator: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 module.exports.Activity = mongoose.model("Activity", activitySchema);

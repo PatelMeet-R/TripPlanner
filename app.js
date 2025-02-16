@@ -6,12 +6,13 @@ const dotenv = require("dotenv");
 const path = require("path");
 const engine = require("ejs-mate");
 const methodOverride = require("method-override");
-const jwt = require("jsonwebtoken");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
-const TripRouter = require("./Routes/trip.js");
-const ActivityRouter = require("./Routes/activity.js");
+const { isloggin } = require("./Middleware.js");
+const { authRouter } = require("./Routes/user.js");
+const { TripRouter } = require("./Routes/trip.js");
+const { ActivityRouter } = require("./Routes/activity.js");
 
 dotenv.config();
 let port = 8000;
@@ -21,6 +22,9 @@ app.engine("ejs", engine);
 app.set("views", path.join(__dirname, "View"));
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, "Public")));
 app.use(methodOverride("_method"));
 app.use(cookieParser());
@@ -28,11 +32,6 @@ const sessionOption = {
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: {
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 3,
-    maxAge: 1000 * 60 * 60 * 24 * 3,
-    httpOnly: true,
-  },
 };
 app.use(session(sessionOption));
 app.use(flash());
@@ -40,12 +39,24 @@ app.use(flash());
 async function main() {
   await mongoose.connect(process.env.DB_URL);
 }
-app.use((req, res, next) => {
+
+app.use(isloggin, (req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+
+  next();
+});
+// Ensure sensitive pages are not cached by the browser by setting appropriate HTTP headers
+app.use((req, res, next) => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, private"
+  );
+  res.setHeader("Pragma", "no-cache");
   next();
 });
 
+app.use("/", authRouter);
 app.use("/trips", TripRouter);
 app.use("/trips/:id/activities", ActivityRouter);
 

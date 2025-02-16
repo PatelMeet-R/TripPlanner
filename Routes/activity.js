@@ -4,12 +4,15 @@ const {
   createActivity,
   destroyActivity,
   editActivity,
-} = require("../Controller/activity");
+} = require("../Controller/ActivityController.js");
+const { isAuthenticate, isValidateActivityCreator, isValidateTripCreator } = require("../Middleware.js");
 const router = express.Router({ mergeParams: true });
 
-// new route
-router.post("/", createActivity);
+router.post("/", isAuthenticate, createActivity);
 
-router.route("/:actId").delete(destroyActivity).put(editActivity);
+router
+  .route("/:actId")
+  .delete(isAuthenticate, isValidateActivityCreator,destroyActivity)
+  .put(isAuthenticate, isValidateActivityCreator,isValidateTripCreator, editActivity);
 
-module.exports = router;
+module.exports.ActivityRouter = router;

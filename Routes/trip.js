@@ -8,13 +8,19 @@ const {
   renderEditTrip,
   editTrip,
   destroyTrip,
-} = require("../Controller/trip");
+} = require("../Controller/TripController.js");
+const { isAuthenticate, isValidateTripCreator } = require("../Middleware.js");
 const router = express.Router();
 
-router.route("/").get(index).post(createTrip);
-router.route("/new", renderTripForm);
-router.route("/:id").get(showTrip).put(editTrip);
-router.delete("/:id", destroyTrip);
-router.route("/:id/edit").get(renderEditTrip);
+router.route("/new").get(isAuthenticate, renderTripForm);
+router.route("/").get(index).post(isAuthenticate, createTrip);
+router
+  .route("/:id")
+  .get(showTrip)
+  .put(isAuthenticate, isValidateTripCreator, editTrip)
+  .delete(isAuthenticate, isValidateTripCreator, destroyTrip);
+router
+  .route("/:id/edit")
+  .get(isAuthenticate, isValidateTripCreator, renderEditTrip);
 
-module.exports = router;
+module.exports.TripRouter = router;

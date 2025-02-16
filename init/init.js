@@ -42,8 +42,11 @@ app.get("/data", async (req, res) => {
         endDate: new Date(trip.endDate),
       };
     });
-
-    const savedTrips = await Trip.insertMany(formattedData);
+    const newdata=formattedData.map((data) => ({
+      ...data,
+      TripCreator: "67afc055f40834c244763c60",
+    }));
+    const savedTrips = await Trip.insertMany(newdata);
     console.log("Data added successfully");
     res.status(200).json({ data: savedTrips });
   } catch (error) {
