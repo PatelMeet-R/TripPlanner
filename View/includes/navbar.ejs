@@ -1,64 +1,186 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light custom-navbar">
-  <div class="container-fluid">
-    <!-- Brand Logo and Name -->
-    <a class="navbar-brand d-flex align-items-center" href="/trips">
-      <i class="fa-solid fa-feather me-2"></i>
-      <span class="brand-name">TripPlanner </span>
-    </a>
+<link rel="stylesheet" href="css/navbar.css" />
 
-    <!-- Toggler Button for Mobile -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
+<% const searchInput = typeof input !== 'undefined' ? input : ''; %>
+<nav
+  class="navbar navbar-expand-md sticky-top custom-mobile-container"
+  style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)"
+>
+  <div class="container-fluid d-md-block">
+    <!-- Mobile Layout Only: Use Flexbox to Align Items -->
+    <div
+      class="d-flex d-md-none justify-content-between align-items-center w-100"
     >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <!-- [1] Navbar Brand: Aligned left on mobile -->
+      <a class="navbar-brand d-flex align-items-center gap-2" href="/trips">
+        <i class="fa-solid fa-feather me-2"></i>
+        <span class="brand-name">TripPlanner </span>
+      </a>
 
-    <!-- Navbar Links and Buttons -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-lg-center">
-        <!-- Search Form -->
-        <li class="nav-item me-lg-3">
-          <form class="d-flex search-form">
-            <input
-              class="form-control search-input"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success search-btn" type="submit">
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-          </form>
-        </li>
+      <!-- [3] Navbar Toggler: Aligned right on mobile -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
 
-        <form action="/trips/new" method="GET">
-          <button class="btn btn-dark">Add trip</button>
+    <!-- [2] Mobile Search Bar: Centered below the brand and toggler -->
+    <div class="row d-md-none mt-2">
+      <div class="col-12 d-flex justify-content-center">
+        <form
+          class="search-container"
+          action="/trips/search"
+          method="GET"
+          style="position: relative; display: flex; align-items: center"
+        >
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search here..."
+            name="q"
+            value="<%= searchInput %>"
+            oninput="this.nextElementSibling.style.display = this.value ? 'flex' : 'none';"
+            style="padding-right: 40px; width: 300px"
+          />
+          <button
+            type="submit"
+            class="btn btn-search"
+            style="
+              display: none;
+              position: absolute;
+              right: 10px;
+              top: 50%;
+              transform: translateY(-50%);
+              background: none;
+              border: none;
+              padding: 0;
+            "
+          >
+            <i
+              class="fa-solid fa-magnifying-glass"
+              style="font-size: 1.2rem; color: #333"
+            ></i>
+          </button>
         </form>
+      </div>
+    </div>
 
+    <!-- Collapsible Content for Mobile -->
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a
+          class="navbar-brand d-flex align-items-center gap-2 ms-4 d-none d-md-flex"
+          href="/trips"
+        >
+          <i class="fa-solid fa-feather"></i>
+          <span class="Brand">TripPlanner </span>
+        </a>
+      </div>
+
+      <!-- Desktop Search Bar: Hidden on mobile screens -->
+      <div class="navbar-nav ms-auto d-none d-md-flex">
+        <form
+          class="search-container"
+          action="/trips/search"
+          method="GET"
+          style="position: relative; display: flex; align-items: center"
+        >
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search here..."
+            name="q"
+            value="<%= searchInput %>"
+            oninput="this.nextElementSibling.style.display = this.value ? 'flex' : 'none';"
+            style="padding-right: 40px"
+          />
+          <button
+            type="submit"
+            class="btn btn-search"
+            style="
+              display: none;
+              position: absolute;
+              right: 10px;
+              top: 50%;
+              transform: translateY(-50%);
+              background: none;
+              border: none;
+              padding: 0;
+            "
+          >
+            <i
+              class="fa-solid fa-magnifying-glass"
+              style="font-size: 1.2rem; color: #333"
+            ></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Account Links -->
+      <div class="navbar-nav ms-auto mt-2 mb-2">
+        <form action="/trips/new" method="get" class="nav-item nav-link">
+          <button type="submit" class="btn btn-dark">Add Trip</button>
+        </form>
         <% if (!currUser) { %>
 
-        <li class="nav-item me-lg-3">
-          <a class="btn btn-primary sign-up-btn" href="/signup">Sign Up</a>
-        </li>
+        <form action="/signup" method="get" class="nav-item nav-link">
+          <button type="submit" class="btn btn-success">Sign Up</button>
+        </form>
+        <form action="/login" method="get" class="nav-item nav-link">
+          <button type="submit" class="btn btn-info">Login</button>
+        </form>
 
-        <li class="nav-item">
-          <a class="btn btn-outline-secondary login-btn" href="/login">Login</a>
-        </li>
-        <% } else { %>
+        <% } %> <% if (currUser) { %>
 
-        <form action="/logout" method="post" class="nav-item">
+        <form action="/logout" method="post" class="nav-item nav-link">
           <button type="submit" class="btn btn-danger logout-btn">
             Logout
           </button>
         </form>
         <% } %>
-      </ul>
+      </div>
     </div>
   </div>
 </nav>
+
+<style>
+  .navbar {
+    height: auto;
+    min-height: 5rem;
+    z-index: 1030;
+    background-color: #f2f3f4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+<script>
+  let autoCloseTimeout;
+
+  // Function to toggle the menu and manage auto-close
+  document
+    .querySelector(".navbar-toggler")
+    .addEventListener("click", function () {
+      const menu = document.querySelector("#navbarNavAltMarkup");
+
+      // Check if the menu is currently visible
+      if (menu.classList.contains("show")) {
+        menu.classList.remove("show"); // Hide the menu
+        clearTimeout(autoCloseTimeout); // Cancel any existing timeout
+      } else {
+        menu.classList.add("show"); // Show the menu
+
+        autoCloseTimeout = setTimeout(() => {
+          menu.classList.remove("show");
+          console.log("working");
+          // Ensure the menu is hidden after 8000ms
+        }, 8000);
+      }
+    });
+</script>

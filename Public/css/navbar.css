@@ -1,124 +1,179 @@
-/* Ensure the navbar is sticky and on top of other content */
-.custom-navbar {
-  z-index: 1050;
-  position: sticky;
-  top: 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  transition: all 0.3s ease-in-out;
+.navbar-toggler {
+  border: none;
+  background-color: transparent !important;
 }
 
-/* Brand Logo and Name */
-.navbar-brand .brand-name {
+.navbar-toggler-icon {
   font-size: 1.5rem;
-  font-family: "Delicious Handrawn", serif !important;
-  color: #000;
-  transition: font-size 0.3s ease-in-out;
+}
+
+/* Navbar Brand */
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .navbar-brand i {
-  font-size: 1.8rem;
-  color: #000; 
+  font-size: 2rem;
 }
 
-/* Search Form */
-.search-form {
-  display: flex;
-  align-items: center;
+/* Navbar Links */
+.navbar-nav .nav-link {
+  color: #222222;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
 }
 
-.search-input {
-  border-radius: 20px 0 0 20px; /* Rounded left side */
-  border: 1px solid #28a745;
+.navbar-nav .nav-link:hover {
+  color: #fe424d;
+}
+
+/* Search Bar */
+.form-control {
+  max-width: 350px;
+  height: 40px;
+  padding-right: 45px;
+  border-radius: 8px;
+  transition: max-width 0.3s ease-in-out;
+}
+
+.btn-search {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #fe424d;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+/* Utilities */
+.navbar-nav .btn {
+  border-radius: 5px;
   padding: 0.5rem 1rem;
+  font-size: 1rem;
 }
 
-.search-btn {
-  border-radius: 0 20px 20px 0; /* Rounded right side */
-  border: 1px solid #28a745;
-  background-color: #28a745;
-  color: white;
-  padding: 0.5rem 1rem;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.search-btn:hover {
-  background-color: #218838;
-}
-
-/* Buttons */
-.add-trip-btn,
-.sign-up-btn,
-.login-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 20px; /* Rounded buttons */
-  transition: all 0.3s ease-in-out;
-}
-
-.add-trip-btn {
-  background-color: #28a745;
-  color: white;
-}
-
-.add-trip-btn:hover {
-  background-color: #218838;
-}
-
-.sign-up-btn {
-  background-color: #007bff;
+.navbar-nav .btn-dark {
+  background-color: #333;
   color: white;
 }
 
-.sign-up-btn:hover {
-  background-color: #0056b3;
+.navbar-nav .btn-info {
+  background-color: #17a2b8;
+  color: white;
 }
 
-.login-btn {
-  border: 1px solid #28a745;
-  color: #28a745;
-}
-
-.login-btn:hover {
+.navbar-nav .btn-success {
   background-color: #28a745;
   color: white;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 767px) {
-  .navbar-brand .brand-name {
-    font-size: 1.2rem; /* Shrink brand name */
-    font-family: "Delicious Handrawn", serif !important;
-  }
+.navbar-nav .btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
 
-  .navbar-brand i {
-    font-size: 1.5rem; /* Shrink icon */
-  }
-
+/* Mobile-specific Styles */
+@media (max-width: 768px) {
   .navbar-nav {
-    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .collapse {
+    background-color: #f2f3f4;
+    padding: 1rem;
     text-align: center;
   }
 
-  .nav-item {
-    margin: 10px 0;
+  .navbar-brand {
+    font-size: 1rem;
   }
 
-  .search-form {
+  .form-control {
     width: 100%;
-    margin: 10px 0;
   }
 
-  .search-input {
-    width: 70%;
+  .custom-mobile-container {
+    width: 95%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .search-btn {
-    width: 30%;
+  .navbar {
+    padding: 1rem;
   }
 
-  .add-trip-btn,
-  .sign-up-btn,
-  .login-btn {
-    width: 100%;
-    margin: 5px 0;
+  .navbar-toggler {
+    font-size: 1.2rem;
+  }
+}
+
+/* Tablet-specific Styles */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .navbar {
+    padding: 1rem 2rem;
+  }
+
+  .navbar-nav {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .form-control {
+    width: 75%;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+}
+
+/* Laptop-specific Styles */
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .navbar {
+    padding: 1rem 3rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.8rem;
+  }
+
+  .form-control {
+    max-width: 300px;
+  }
+
+  .navbar-nav {
+    gap: 1.5rem;
+  }
+}
+
+/* Desktop-specific Styles */
+@media (min-width: 1440px) {
+  .navbar {
+    padding: 1rem 5rem;
+  }
+
+  .navbar-brand {
+    font-size: 2rem;
+  }
+
+  .form-control {
+    max-width: 400px;
+  }
+
+  .navbar-nav {
+    gap: 2rem;
   }
 }

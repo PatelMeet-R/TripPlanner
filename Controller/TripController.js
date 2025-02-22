@@ -1,86 +1,83 @@
 const { Trip } = require("../Model/Trip");
+const { wrapAsync } = require("../Utils/wrapAsync");
+const ExpressError = require("../Utils/Error/ExpressError"); 
 
-module.exports.index = async (req, res) => {
-  try {
-    let allTrips = await Trip.find({});
-    res.render("trips/index.ejs", { allTrips });
-  } catch (err) {
-    console.log("get route for index", err);
+// Use wrapAsync for all async route handlers
+module.exports.index = wrapAsync(async (req, res) => {
+  let allTrips = await Trip.find({});
+  if (!allTrips || allTrips.length === 0) {
+    throw new ExpressError(404, "No trips found.");
   }
-};
-module.exports.renderTripForm = async (req, res) => {
-  try {
-    res.render("trips/new.ejs");
-  } catch (err) {
-    console.log("error et rendering new EJS", err);
+  res.render("trips/index.ejs", { allTrips });
+});
+
+module.exports.renderTripForm = wrapAsync(async (req, res) => {
+  res.render("trips/new.ejs");
+});
+
+module.exports.createTrip = wrapAsync(async (req, res) => {
+  let tripData = req.body.trip;
+  tripData.TripCreator = req.user.id;
+
+  const tripDetails = await Trip.create(tripData); 
+  if (!tripDetails) {
+    throw new ExpressError(400, "Failed to create a new trip.");
   }
-};
-module.exports.createTrip = async (req, res) => {
-  try {
-    let tripData = req.body.trip;
-    tripData.TripCreator = req.user.id;
-    
-    const tripDetails = await Trip.insertOne(tripData);
-    req.flash("success", "The trip has been successfully created.");
-    res.redirect("/trips");
-  } catch (error) {
-    req.flash("error", "Something went Wrong create new Trip Again ");
-    res.redirect("/trips/new");
-    console.log("fail to save the trip", error);
+
+  req.flash("success", "The trip has been successfully created.");
+  res.redirect("/trips");
+});
+
+module.exports.showTrip = wrapAsync(async (req, res) => {
+  let id = req.params.id;
+  let trip = await Trip.findById(id)
+    .populate("activityDetails")
+    .populate({ path: "TripCreator", select: "-email -password" });
+
+  if (!trip) {
+    throw new ExpressError(404, "Trip not found.");
   }
-};
-module.exports.showTrip = async (req, res) => {
-  try {
-    let id = req.params.id;
-    let trip = await Trip.findById(id)
-      .populate("activityDetails")
-      .populate({ path: "TripCreator", select: "-email -password" });
-    if (!trip) {
-      req.flash("error", "Trip not found");
-      return res.redirect("/trips");
-    }
-    res.render("trips/show.ejs", { trip });
-  } catch (error) {
-    console.log("fetching from DB failed", error);
-  }
-};
-module.exports.renderEditTrip = async (req, res) => {
+
+  res.render("trips/show.ejs", { trip });
+});
+
+module.exports.renderEditTrip = wrapAsync(async (req, res) => {
   let { id } = req.params;
   let trip = await Trip.findById(id);
+
   if (!trip) {
-    req.flash("error", "The trip could not be found for editing.");
-    return res.redirect("/trips");
+    throw new ExpressError(404, "The trip could not be found for editing.");
   }
+
   res.render("trips/edit.ejs", { trip });
-};
-module.exports.editTrip = async (req, res) => {
-  try {
-    let { id } = req.params;
-    let tripData = req.body.trip;
-    const tripUpdate = await Trip.findByIdAndUpdate(
-      id,
-      { ...tripData },
-      { runValidators: true, new: true }
-    );
-    if (!tripUpdate) {
-      req.flash("error", "The trip could not be found for editing.");
-      return res.redirect(`/trips`);
-    }
-    req.flash("success", "The trip has been successfully edited.");
-    res.redirect("/trips");
-  } catch (error) {
-    console.log("this error occurs at edit route", error);
+});
+
+module.exports.editTrip = wrapAsync(async (req, res) => {
+  let { id } = req.params;
+  let tripData = req.body.trip;
+
+  const tripUpdate = await Trip.findByIdAndUpdate(
+    id,
+    { ...tripData },
+    { runValidators: true, new: true }
+  );
+
+  if (!tripUpdate) {
+    throw new ExpressError(404, "The trip could not be found for editing.");
   }
-};
-module.exports.destroyTrip = async (req, res) => {
-  try {
-    let { id } = req.params;
-    await Trip.findByIdAndDelete(id);
-    req.flash("success", "Your trip has been successfully deleted.");
-    res.redirect("/trips");
-  } catch (error) {
-    req.flash("error", "Something went Wrong");
-    res.redirect("/trips");
-    console.log("this error occurs at delete route", error);
+
+  req.flash("success", "The trip has been successfully edited.");
+  res.redirect("/trips");
+});
+
+module.exports.destroyTrip = wrapAsync(async (req, res) => {
+  let { id } = req.params;
+
+  const trip = await Trip.findByIdAndDelete(id);
+  if (!trip) {
+    throw new ExpressError(404, "The trip could not be found for deletion.");
   }
-};
+
+  req.flash("success", "Your trip has been successfully deleted.");
+  res.redirect("/trips");
+});

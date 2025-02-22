@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { Trip } = require("./Model/Trip");
 const { Activity } = require("./Model/activity");
+const { tripSchema } = require("./SchemaValidation");
 
 module.exports.isAuthenticate = (req, res, next) => {
   const token = req.cookies.authToken;
@@ -62,4 +63,16 @@ module.exports.isValidateActivityCreator = async (req, res, next) => {
     return res.redirect(`/trips/${id}`);
   }
   next();
+};
+
+module.exports.validateTripData = (req, res, next) => {
+  try {
+    tripSchema.parse(req.body.trip);
+    next(); // Proceed if validation passes
+  } catch (error) {
+    // If validation fails, handle the error
+    const errMsg = error.errors.map((e) => e.message).join(", ");
+    req.flash("error", `Validation failed: ${errMsg}`);
+    res.redirect("back"); // Redirect back to the form if validation fails
+  }
 };

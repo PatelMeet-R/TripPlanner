@@ -13,6 +13,7 @@ const { isloggin } = require("./Middleware.js");
 const { authRouter } = require("./Routes/user.js");
 const { TripRouter } = require("./Routes/trip.js");
 const { ActivityRouter } = require("./Routes/activity.js");
+const ExpressError = require("./Utils/Error/ExpressError.js");
 
 dotenv.config();
 let port = 8000;
@@ -59,6 +60,15 @@ app.use((req, res, next) => {
 app.use("/", authRouter);
 app.use("/trips", TripRouter);
 app.use("/trips/:id/activities", ActivityRouter);
+
+app.all("*", (req, res, next) => {
+  next(new ExpressError(404, "Page Not Found"));
+});
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message = "Internal Server Error" } = err;
+  res.status(statusCode).render("User/Error.ejs", { message });
+});
 
 main()
   .then((data) => {
