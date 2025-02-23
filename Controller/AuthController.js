@@ -1,6 +1,7 @@
 const User = require("../Model/User");
 
 module.exports.renderSignUPForm = (req, res) => {
+  res.locals.showSearch = false; // Do not show the search bar
   res.render("User/signup.ejs");
 };
 module.exports.signUpUser = async (req, res) => {
@@ -34,6 +35,7 @@ module.exports.signUpUser = async (req, res) => {
 };
 
 module.exports.renderLoginForm = (req, res) => {
+  res.locals.showSearch = false; // Do not show the search bar
   res.render("User/login.ejs");
 };
 module.exports.loginRequest = async (req, res) => {

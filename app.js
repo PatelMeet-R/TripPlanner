@@ -24,7 +24,6 @@ app.set("views", path.join(__dirname, "View"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "Public")));
 app.use(methodOverride("_method"));
@@ -38,12 +37,18 @@ app.use(session(sessionOption));
 app.use(flash());
 
 async function main() {
-  await mongoose.connect(process.env.DB_URL);
+  try {
+    await mongoose.connect(process.env.DB_URL);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+  }
 }
 
 app.use(isloggin, (req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+  res.locals.showSearch = true; //show the search bar
 
   next();
 });

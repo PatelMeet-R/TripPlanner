@@ -9,7 +9,7 @@ module.exports.tripSchema = z.object({
   }),
 
   startDate: z.preprocess(
-    (val) => (val ? new Date(val) : val), 
+    (val) => (val ? new Date(val) : val),
     z.date().refine((date) => date >= new Date()) // Check if the start date is in the future
   ),
   endDate: z.preprocess(

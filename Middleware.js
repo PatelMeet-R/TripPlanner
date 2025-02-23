@@ -14,7 +14,7 @@ module.exports.isAuthenticate = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    return next();
+    next();
   } catch (error) {
     req.flash("error", "Session expired. Please log in again.");
     return res.redirect("/login");

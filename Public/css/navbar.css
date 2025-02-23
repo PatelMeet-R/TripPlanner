@@ -58,26 +58,6 @@
   font-size: 1rem;
 }
 
-.navbar-nav .btn-dark {
-  background-color: #333;
-  color: white;
-}
-
-.navbar-nav .btn-info {
-  background-color: #17a2b8;
-  color: white;
-}
-
-.navbar-nav .btn-success {
-  background-color: #28a745;
-  color: white;
-}
-
-.navbar-nav .btn-danger {
-  background-color: #dc3545;
-  color: white;
-}
-
 /* Mobile-specific Styles */
 @media (max-width: 768px) {
   .navbar-nav {
@@ -101,7 +81,7 @@
   }
 
   .custom-mobile-container {
-    width: 95%;
+    width: 100%;
     max-width: 500px;
     margin: 0 auto;
     padding: 1rem;

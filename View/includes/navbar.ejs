@@ -29,7 +29,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
     </div>
-
+    <% if (showSearch) { %>
     <!-- [2] Mobile Search Bar: Centered below the brand and toggler -->
     <div class="row d-md-none mt-2">
       <div class="col-12 d-flex justify-content-center">
@@ -70,7 +70,7 @@
         </form>
       </div>
     </div>
-
+    <%}%>
     <!-- Collapsible Content for Mobile -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
@@ -84,6 +84,7 @@
       </div>
 
       <!-- Desktop Search Bar: Hidden on mobile screens -->
+      <% if (showSearch) { %>
       <div class="navbar-nav ms-auto d-none d-md-flex">
         <form
           class="search-container"
@@ -121,6 +122,7 @@
           </button>
         </form>
       </div>
+      <% } %>
 
       <!-- Account Links -->
       <div class="navbar-nav ms-auto mt-2 mb-2">
@@ -151,8 +153,8 @@
 
 <style>
   .navbar {
-    height: auto;
-    min-height: 5rem;
+    height: 5.2rem;
+    min-height: 4rem;
     z-index: 1030;
     background-color: #f2f3f4;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

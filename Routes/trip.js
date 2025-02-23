@@ -8,6 +8,7 @@ const {
   renderEditTrip,
   editTrip,
   destroyTrip,
+  searchRequest,
 } = require("../Controller/TripController.js");
 const {
   isAuthenticate,
@@ -17,6 +18,7 @@ const {
 const router = express.Router();
 
 router.route("/new").get(isAuthenticate, renderTripForm);
+router.route("/search").get(searchRequest);
 router.route("/").get(index).post(isAuthenticate, validateTripData, createTrip);
 router
   .route("/:id")

@@ -1,6 +1,6 @@
 const { Trip } = require("../Model/Trip");
 const { wrapAsync } = require("../Utils/wrapAsync");
-const ExpressError = require("../Utils/Error/ExpressError"); 
+const ExpressError = require("../Utils/Error/ExpressError");
 
 // Use wrapAsync for all async route handlers
 module.exports.index = wrapAsync(async (req, res) => {
@@ -12,6 +12,7 @@ module.exports.index = wrapAsync(async (req, res) => {
 });
 
 module.exports.renderTripForm = wrapAsync(async (req, res) => {
+  res.locals.showSearch = false;
   res.render("trips/new.ejs");
 });
 
@@ -19,7 +20,7 @@ module.exports.createTrip = wrapAsync(async (req, res) => {
   let tripData = req.body.trip;
   tripData.TripCreator = req.user.id;
 
-  const tripDetails = await Trip.create(tripData); 
+  const tripDetails = await Trip.create(tripData);
   if (!tripDetails) {
     throw new ExpressError(400, "Failed to create a new trip.");
   }
@@ -80,4 +81,35 @@ module.exports.destroyTrip = wrapAsync(async (req, res) => {
 
   req.flash("success", "Your trip has been successfully deleted.");
   res.redirect("/trips");
+});
+module.exports.searchRequest = wrapAsync(async (req, res) => {
+  let input = req.query.q;
+  let query = input ? input.trim() : "";
+
+  if (query === "") {
+    req.flash("error", "Please enter a search query!");
+    return res.status(404).redirect("/trips");
+  }
+
+  let searchQuery = new RegExp(query, "i");
+
+  const searchList = await Trip.find({
+    $or: [
+      { title: searchQuery },
+      { initialpoint: searchQuery },
+      { "destination.country": searchQuery },
+      { "destination.location": searchQuery },
+      { description: searchQuery },
+      { status: searchQuery },
+    ],
+  });
+  if (searchList.length === 0) {
+    req.flash("error", "No trips found based on your search");
+    return res.redirect("/trips");
+  }
+
+  return res.status(200).render("trips/index.ejs", {
+    allTrips: searchList,
+    input,
+  });
 });
