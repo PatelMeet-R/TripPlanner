@@ -361,7 +361,6 @@
               >
                 Edit
               </button>
-              
             </form>
           </div>
         </div>
@@ -436,7 +435,7 @@
                   rows="2"
                   required
                 >
-                <%= activity.actnote %></textarea
+<%= activity.actnote %></textarea
                 >
                 <div class="invalid-feedback">
                   Please provide a note for the activity.
@@ -495,7 +494,50 @@
                 <div class="invalid-feedback">Please provide the cost.</div>
               </div>
 
-              <!-- Submit Button -->
+              <!-- Approve/Reject Buttons -->
+              <div class="d-flex justify-content-between mb-2">
+                <!-- Approve Button -->
+                <form
+                  action="/trips/<%= trip._id %>/activities/<%= activity._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <input
+                    type="hidden"
+                    name="activity[isApproved]"
+                    value="true"
+                  />
+                  <input
+                    type="hidden"
+                    name="activity[actstatus]"
+                    value="Accepted"
+                  />
+                  <button type="submit" class="btn btn-success btn-sm">
+                    Approve
+                  </button>
+                </form>
+
+                <!-- Reject Button -->
+                <form
+                  action="/trips/<%= trip._id %>/activities/<%= activity._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <input
+                    type="hidden"
+                    name="activity[isApproved]"
+                    value="false"
+                  />
+                  <input
+                    type="hidden"
+                    name="activity[actstatus]"
+                    value="Rejected"
+                  />
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    Reject
+                  </button>
+                </form>
+              </div>
+
+              <!-- Submit Button for Editing -->
               <div class="modal-footer p-2">
                 <button
                   type="button"

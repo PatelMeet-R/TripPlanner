@@ -1,0 +1,136 @@
+<!--  Edit Activity Modal for each activity -->
+<div
+  class="modal fade"
+  id="editActivityModal_<%= activity._id %>"
+  tabindex="-1"
+  aria-labelledby="editActivityModalLabel_<%= activity._id %>"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editActivityModalLabel_<%= activity._id %>">
+          Edit Activity
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          id="editActivityForm_<%= activity._id %>"
+          action="/trips/<%= trip._id %>/activities/<%= activity._id %>?_method=PUT"
+          method="POST"
+          novalidate
+        >
+          <!-- Activity ID (hidden field) -->
+          <input
+            type="hidden"
+            name="activity[_id]"
+            value="<%= activity._id %>"
+          />
+
+          <!-- Activity Name -->
+          <div class="mb-2">
+            <label for="editActName_<%= activity._id %>" class="form-label"
+              >Activity Name</label
+            >
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="editActName_<%= activity._id %>"
+              name="activity[actName]"
+              value="<%= activity.actName %>"
+              required
+            />
+            <div class="invalid-feedback">Please provide an activity name.</div>
+          </div>
+
+          <!-- Activity Note -->
+          <div class="mb-2">
+            <label for="editActNote_<%= activity._id %>" class="form-label"
+              >Activity Note</label
+            >
+            <textarea
+              class="form-control form-control-sm"
+              id="editActNote_<%= activity._id %>"
+              name="activity[actnote]"
+              rows="2"
+              required
+            >
+            <%= activity.actnote %></textarea
+            >
+            <div class="invalid-feedback">
+              Please provide a note for the activity.
+            </div>
+          </div>
+
+          <!-- Activity Location -->
+          <div class="mb-2">
+            <label for="editActLocation_<%= activity._id %>" class="form-label"
+              >Location</label
+            >
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="editActLocation_<%= activity._id %>"
+              name="activity[actlocation]"
+              value="<%= activity.actlocation %>"
+              required
+            />
+            <div class="invalid-feedback">Please provide the location.</div>
+          </div>
+
+          <!-- Activity Category -->
+          <div class="mb-2">
+            <label for="editActCategory_<%= activity._id %>" class="form-label"
+              >Category</label
+            >
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="editActCategory_<%= activity._id %>"
+              name="activity[actcategory]"
+              value="<%= activity.actcategory %>"
+              required
+            />
+            <div class="invalid-feedback">Please provide a category.</div>
+          </div>
+
+          <!-- Activity Cost -->
+          <div class="mb-2">
+            <label for="editActCost_<%= activity._id %>" class="form-label"
+              >Cost</label
+            >
+            <input
+              type="number"
+              class="form-control form-control-sm"
+              id="editActCost_<%= activity._id %>"
+              name="activity[actcost]"
+              value="<%= activity.actcost %>"
+              required
+            />
+            <div class="invalid-feedback">Please provide the cost.</div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="modal-footer p-2">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary btn-sm">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
